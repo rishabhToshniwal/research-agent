@@ -1,0 +1,6 @@
+requests>=2.31.0
+openai-agents>=0.15.1
+openai>=2.0.0
+python-dotenv>=1.0.0
+pydantic>=2.13.3
+
