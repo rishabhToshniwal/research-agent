@@ -12,7 +12,7 @@ HEADER_HTML = """
         <span class="dr-bar dr-bar-3"></span>
     </div>
     <div class="dr-titles">
-        <h1>Deep<span class="dr-sep">/</span>Research</h1>
+        <h1>Ask<span class="dr-sep">/</span>Me!!</h1>
         <p>Search beyond the search</p>
     </div>
 </div>
