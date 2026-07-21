@@ -4,7 +4,7 @@ import asyncio
 from agents import Agent, ModelSettings, Runner, function_tool, trace, gen_trace_id
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
-from research import planner_agent, web_search_agent, writer_agent, printer_agent, WebSearchItem, ReportData, WebSearchPlan
+from research_agents import planner_agent, web_search_agent, writer_agent, printer_agent, WebSearchItem, ReportData, WebSearchPlan
 
 class AgentManager:
     async def run(self, query: str):
