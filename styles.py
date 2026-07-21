@@ -1,6 +1,6 @@
 EXAMPLES = [
     "Most popular AI Agent frameworks in 2026",
-    "Most commercially successful Agentic AI implementations in 2026",
+    "Best Soccer Players in the World in 2026",
     "Celebrities who don't like cheese",
 ]
 
@@ -13,7 +13,7 @@ HEADER_HTML = """
     </div>
     <div class="dr-titles">
         <h1>Deep<span class="dr-sep">/</span>Research</h1>
-        <p>Multi-search web investigation</p>
+        <p>Search beyond the search</p>
     </div>
 </div>
 """
