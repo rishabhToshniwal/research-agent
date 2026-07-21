@@ -33,6 +33,10 @@ python app.py
 
 ---
 
+![Research Agent Output](images/output.png)
+
+---
+
 ## Prerequisites
 
 - **Python 3.12+**
