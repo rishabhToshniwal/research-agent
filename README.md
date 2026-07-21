@@ -1,17 +1,20 @@
 # Research Agents
 
-A multi-agent research pipeline with the [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/). Python code orchestrates each step: plan searches → search the web in parallel → write a report → save HTML.
+A Gradio UI for deep research, built with the [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/). Enter a question; agents plan searches, query the web in parallel, write a report, and save HTML.
 
-| Agent | Role |
-|-------|------|
-| **planner_agent** | Turns a query into 2 web search terms (`WebSearchPlan`) |
-| **web_search_agent** | Searches via LangSearch (`web_search` tool) and summarizes |
+| Component | Role |
+|-----------|------|
+| **app.py** | Gradio UI — query box, status updates, markdown report |
+| **AgentManager** | Orchestrates plan → search → write → print; yields progress |
+| **planner_agent** | Turns a query into web search terms (`WebSearchPlan`) |
+| **web_search_agent** | Searches via LangSearch and summarizes |
 | **writer_agent** | Writes a markdown research report (`ReportData`) |
 | **printer_agent** | Converts the report to HTML and saves a `.html` file |
 
 ```mermaid
 flowchart LR
-    query[User query] --> planner[planner_agent]
+    ui[Gradio UI] --> manager[AgentManager]
+    manager --> planner[planner_agent]
     planner --> gather[asyncio.gather searches]
     gather --> search1[web_search_agent]
     gather --> search2[web_search_agent]
@@ -19,17 +22,14 @@ flowchart LR
     search2 --> writer
     writer --> printer[printer_agent]
     printer --> html[Save .html file]
+    writer --> ui
 ```
 
-**Pattern:** orchestration by code — your Python (`plan` → `write` → `print_report`) controls the flow with `Runner.run` and `asyncio.gather`.
+**Pattern:** orchestration by code — `AgentManager` controls the flow with `Runner.run` and `asyncio.gather`; the UI streams status updates as each step finishes.
 
 ```bash
-python research.py
+python app.py
 ```
-
----
-
-![Orchestration demo](images/output.png)
 
 ---
 
@@ -59,7 +59,7 @@ pip install -r requirements.txt
 
 ## Corporate proxy (optional)
 
-If API calls fail with SSL/certificate errors behind a corporate proxy, [`proxy_patch.py`](proxy_patch.py) disables SSL verification for `httpx` and `requests`. It is imported at the top of `research.py`:
+If API calls fail with SSL/certificate errors behind a corporate proxy, [`proxy_patch.py`](proxy_patch.py) disables SSL verification for `httpx` and `requests`. It is imported in `agent_manager.py` / `research.py`:
 
 ```python
 import proxy_patch
@@ -81,8 +81,11 @@ import proxy_patch
 
 ```
 research-agents/
-├── research.py        # Full research pipeline
-├── proxy_patch.py     # Optional: SSL workaround for corporate proxies
+├── app.py               # Gradio UI entrypoint
+├── agent_manager.py     # Orchestration (plan → search → write → print)
+├── research.py          # Agents, tools, and structured outputs
+├── styles.py            # Gradio CSS, JS, examples, header
+├── proxy_patch.py       # Optional: SSL workaround for corporate proxies
 ├── requirements.txt
 ├── .env
 └── README.md
@@ -90,7 +93,7 @@ research-agents/
 
 ## Traces
 
-Runs use `with trace("Research Agent")` so they appear on the [OpenAI Traces dashboard](https://platform.openai.com/traces).
+Each run creates a trace link (shown in the UI) that opens on the [OpenAI Traces dashboard](https://platform.openai.com/traces).
 
 ## License
 
